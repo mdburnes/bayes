@@ -15,7 +15,13 @@
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/button.h>
 
+#include <string>
+
 class MainWindow : public Gtk::Window {
+  private:
+	bool window_is_closing;
+	float text_to_float( std::string string_to_process );
+	std::string float_to_text( float float_to_process );
   protected:
 	Gtk::Box window_box, inputs_box, controls_box;
 	Gtk::ButtonBox result_button_box;
@@ -32,7 +38,22 @@ class MainWindow : public Gtk::Window {
 	Glib::RefPtr<Gtk::Adjustment> phe_scale_adjustment;
 	Gtk::DrawingArea drawing_area;
 	Gtk::Button positive_evidence, negative_evidence;
+	bool on_delete_event( GdkEventAny *event );
+	void on_phe_scale_changed( void );
 	void on_eh_scale_changed( void );
+	void on_neh_scale_changed( void );
+	void on_hyp_entry_activate( void );
+	bool on_hyp_entry_focus_out_event( GdkEventFocus *ev );
+	void on_ev_given_hyp_entry_activate( void );
+	bool on_ev_given_hyp_entry_focus_out_event( GdkEventFocus *ev );
+	void on_neg_ev_given_hyp_entry_activate( void );
+	bool on_neg_ev_given_hyp_entry_focus_out_event( GdkEventFocus *ev );
+	void on_n_hyp_entry_activate( void );
+	bool on_n_hyp_entry_focus_out_event( GdkEventFocus *ev );
+	void on_ev_given_n_hyp_entry_activate( void );
+	bool on_ev_given_n_hyp_entry_focus_out_event( GdkEventFocus *ev );
+	void on_neg_ev_given_n_hyp_entry_activate( void );
+	bool on_neg_ev_given_n_hyp_entry_focus_out_event( GdkEventFocus *ev );
   public:
 	MainWindow( void );
 	~MainWindow();
