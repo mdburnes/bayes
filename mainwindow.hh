@@ -1,6 +1,8 @@
 #ifndef BAYES_MAINWINDOW_HH
 #define BAYES_MAINWINDOW_HH
 
+#include "bayesgraph.hh"
+
 #include "gtkmm/container.h"
 #include "gtkmm/widget.h"
 #include <gtkmm/enums.h>
@@ -36,7 +38,7 @@ class MainWindow : public Gtk::Window {
 	Glib::RefPtr<Gtk::Adjustment> eh_scale_adjustment;
 	Glib::RefPtr<Gtk::Adjustment> neh_scale_adjustment;
 	Glib::RefPtr<Gtk::Adjustment> phe_scale_adjustment;
-	Gtk::DrawingArea drawing_area;
+	BayesGraph bayes_graph;
 	Gtk::Button positive_evidence, negative_evidence;
 	bool on_delete_event( GdkEventAny *event );
 	void on_phe_scale_changed( void );

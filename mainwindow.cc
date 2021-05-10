@@ -70,9 +70,10 @@ MainWindow::MainWindow( void )
 	phe_scale.set_size_request( 300, -1 );
 	phe_scale.set_vexpand( false );
 	phe_scale.set_hexpand( false );
-	drawing_area.set_size_request(300, 300);
-	drawing_area.set_hexpand( true );
-	drawing_area.set_vexpand( true );
+	phe_scale.set_value_pos(Gtk::POS_RIGHT);
+	bayes_graph.set_size_request(300, 300);
+	bayes_graph.set_hexpand( true );
+	bayes_graph.set_vexpand( true );
 
 	hyp_label.set_can_focus( false );
 	ev_given_hyp_label.set_can_focus( false );
@@ -100,7 +101,7 @@ MainWindow::MainWindow( void )
 
 
 	geometry_grid.attach( eh_scale, 0, 0 );
-	geometry_grid.attach( drawing_area, 1, 0 );
+	geometry_grid.attach( bayes_graph, 1, 0 );
 	geometry_grid.attach( neh_scale, 2, 0 );
 	geometry_grid.attach( phe_scale, 1, 1 );
 
