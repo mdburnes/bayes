@@ -14,15 +14,24 @@ BayesData::BayesData() {
 
 double BayesData::text_to_double( std::string str ) {
 	double working_number = atof(str.c_str());
-	if( working_number <= 0 || working_number >= 1 ) return DOUBLE_ERROR;
+	if( working_number < SCALE_MIN || working_number > SCALE_MAX)
+		return DOUBLE_ERROR;
 	return working_number;
 }
 
-double BayesData::set_hyp( double value ) {
-	if( value <= 0 || value >= 1 ) return hyp;
+void BayesData::set_hyp( double value ) {
 	hyp = value;
 	nhyp = 1 - value;
-	return hyp;
+}
+
+void BayesData::set_ev_hyp( double value ) {
+	ev_hyp = value;
+	nev_hyp = 1 - value;
+}
+
+void BayesData::set_ev_nhyp( double value ) {
+	ev_nhyp = value;
+	nev_nhyp = 1 - value;
 }
 
 std::string BayesData::set_hyp( std::string str ) {

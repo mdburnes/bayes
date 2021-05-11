@@ -27,9 +27,12 @@ MainWindow::MainWindow( void )
   ev_nhyp_label( "P(E|￢H)", Gtk::ALIGN_END ),
   nev_hyp_label( "P(￢E|H)", Gtk::ALIGN_END ),
   nev_nhyp_label( "P(￢E|￢H)", Gtk::ALIGN_END ),
-  eh_scale_adjustment( Gtk::Adjustment::create(0.0, 0.0, 1.0, 0.01, 0, 0) ),
-  neh_scale_adjustment( Gtk::Adjustment::create(0.0, 0.0, 1.0, 0.01, 0, 0) ),
-  phe_scale_adjustment( Gtk::Adjustment::create(0.0, 0.0, 1.0, 0.01, 0, 0) ),
+  eh_scale_adjustment(Gtk::Adjustment::create(
+	  0.0, SCALE_MIN, SCALE_MAX, 0.01, 0, 0) ),
+  neh_scale_adjustment(Gtk::Adjustment::create(
+	  0.0, SCALE_MIN, SCALE_MAX, 0.01, 0, 0) ),
+  phe_scale_adjustment(Gtk::Adjustment::create(
+	  0.0, SCALE_MIN, SCALE_MAX, 0.01, 0, 0) ),
   eh_scale( Gtk::ORIENTATION_VERTICAL ),
   neh_scale( Gtk::ORIENTATION_VERTICAL ),
   phe_scale( Gtk::ORIENTATION_HORIZONTAL ),
@@ -179,39 +182,27 @@ MainWindow::MainWindow( void )
 MainWindow::~MainWindow() {
 }
 
-double MainWindow::text_to_double( std::string string_to_process ) {
-	double working_number = atof( string_to_process.c_str() );
-	if(working_number <= 0 || working_number >= 1 ) working_number = 0.05;
-	return working_number;
-}
-
-std::string MainWindow::double_to_text( double double_to_process ) {
-	std::stringstream output_string;
-	output_string << double_to_process;
-	return output_string.str();
-}
-
 bool MainWindow::on_delete_event( GdkEventAny *event ) {
 	window_is_closing = true;
 	return false;
 }
 
 void MainWindow::on_phe_scale_changed( void ) {
-	double working_number = phe_scale.get_value();
-	hyp_entry.set_text( double_to_text(working_number) );
-	nhyp_entry.set_text( double_to_text( (1.0 - working_number) ));
+	bayes_data.set_hyp(phe_scale.get_value());
+	hyp_entry.set_text(bayes_data.get_hyp());
+	nhyp_entry.set_text(bayes_data.get_nhyp());
 }
 
 void MainWindow::on_eh_scale_changed( void ) {
-	double working_number = eh_scale.get_value();
-	ev_hyp_entry.set_text( double_to_text(working_number) );
-	nev_hyp_entry.set_text( double_to_text((1.0 - working_number)));
+	bayes_data.set_ev_hyp(eh_scale.get_value());
+	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
+	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
 }
 
 void MainWindow::on_neh_scale_changed( void ) {
-	double working_number = neh_scale.get_value();
-	ev_nhyp_entry.set_text( double_to_text(working_number));
-	nev_nhyp_entry.set_text( double_to_text((1.0 - working_number)));
+	bayes_data.set_ev_nhyp(neh_scale.get_value());
+	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
+	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
 }
 
 void MainWindow::on_hyp_entry_activate( void ) {

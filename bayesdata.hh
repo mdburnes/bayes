@@ -4,6 +4,8 @@
 #define HYPOTHESIS 0.05
 #define EVIDENCE_GIVEN_H 0.80
 #define EVIDENCE_GIVEN_NOT_H 0.40
+#define SCALE_MIN 0.001
+#define SCALE_MAX 0.999
 #define DOUBLE_ERROR -1
 
 #include <iostream>
@@ -22,7 +24,9 @@ class BayesData {
 	double text_to_double( std::string str );
   public:
 	BayesData();
-	double set_hyp( double value );
+	void set_hyp( double value );
+	void set_ev_hyp( double value );
+	void set_ev_nhyp( double value );
 	std::string set_hyp( std::string str );
 	std::string get_hyp( void );
 	double get_hyp_value( void ) { return hyp; }

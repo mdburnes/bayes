@@ -22,8 +22,6 @@
 class MainWindow : public Gtk::Window {
   private:
 	bool window_is_closing;
-	double text_to_double( std::string string_to_process );
-	std::string double_to_text( double double_to_process );
   protected:
 	Gtk::Box window_box, inputs_box, controls_box;
 	Gtk::ButtonBox result_button_box;
