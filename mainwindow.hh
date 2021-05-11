@@ -22,18 +22,18 @@
 class MainWindow : public Gtk::Window {
   private:
 	bool window_is_closing;
-	float text_to_float( std::string string_to_process );
-	std::string float_to_text( float float_to_process );
+	double text_to_double( std::string string_to_process );
+	std::string double_to_text( double double_to_process );
   protected:
 	Gtk::Box window_box, inputs_box, controls_box;
 	Gtk::ButtonBox result_button_box;
 	Gtk::Grid geometry_grid, hypothesis_grid, n_hypothesis_grid;
-	Gtk::Label hyp_label, n_hyp_label;
-	Gtk::Label ev_given_hyp_label, ev_given_n_hyp_label;
-	Gtk::Label neg_ev_given_hyp_label, neg_ev_given_n_hyp_label;
-	Gtk::Entry hyp_entry, n_hyp_entry;
-	Gtk::Entry ev_given_hyp_entry, ev_given_n_hyp_entry;
-	Gtk::Entry neg_ev_given_hyp_entry, neg_ev_given_n_hyp_entry;
+	Gtk::Label hyp_label, nhyp_label;
+	Gtk::Label ev_hyp_label, ev_nhyp_label;
+	Gtk::Label nev_hyp_label, nev_nhyp_label;
+	Gtk::Entry hyp_entry, nhyp_entry;
+	Gtk::Entry ev_hyp_entry, ev_nhyp_entry;
+	Gtk::Entry nev_hyp_entry, nev_nhyp_entry;
 	Gtk::Scale eh_scale, neh_scale, phe_scale;
 	Glib::RefPtr<Gtk::Adjustment> eh_scale_adjustment;
 	Glib::RefPtr<Gtk::Adjustment> neh_scale_adjustment;

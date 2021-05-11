@@ -1,4 +1,5 @@
 #include "mainwindow.hh"
+#include "bayesdata.hh"
 #include "gtkmm/adjustment.h"
 #include "gtkmm/box.h"
 #include "gtkmm/enums.h"
@@ -10,6 +11,8 @@
 #include <string>
 #include <sstream>
 
+extern BayesData bayes_data;
+
 MainWindow::MainWindow( void )
 :
   window_box( Gtk::ORIENTATION_HORIZONTAL, 10 ),
@@ -19,11 +22,11 @@ MainWindow::MainWindow( void )
   hypothesis_grid(),
   n_hypothesis_grid(),
   hyp_label( "P(H)", Gtk::ALIGN_END ),
-  n_hyp_label( "P(￢H)", Gtk::ALIGN_END ),
-  ev_given_hyp_label( "P(E|H)", Gtk::ALIGN_END ),
-  ev_given_n_hyp_label( "P(E|￢H)", Gtk::ALIGN_END ),
-  neg_ev_given_hyp_label( "P(￢E|H)", Gtk::ALIGN_END ),
-  neg_ev_given_n_hyp_label( "P(￢E|￢H)", Gtk::ALIGN_END ),
+  nhyp_label( "P(￢H)", Gtk::ALIGN_END ),
+  ev_hyp_label( "P(E|H)", Gtk::ALIGN_END ),
+  ev_nhyp_label( "P(E|￢H)", Gtk::ALIGN_END ),
+  nev_hyp_label( "P(￢E|H)", Gtk::ALIGN_END ),
+  nev_nhyp_label( "P(￢E|￢H)", Gtk::ALIGN_END ),
   eh_scale_adjustment( Gtk::Adjustment::create(0.0, 0.0, 1.0, 0.01, 0, 0) ),
   neh_scale_adjustment( Gtk::Adjustment::create(0.0, 0.0, 1.0, 0.01, 0, 0) ),
   phe_scale_adjustment( Gtk::Adjustment::create(0.0, 0.0, 1.0, 0.01, 0, 0) ),
@@ -76,24 +79,24 @@ MainWindow::MainWindow( void )
 	bayes_graph.set_vexpand( true );
 
 	hyp_label.set_can_focus( false );
-	ev_given_hyp_label.set_can_focus( false );
-	neg_ev_given_hyp_label.set_can_focus( false );
+	ev_hyp_label.set_can_focus( false );
+	nev_hyp_label.set_can_focus( false );
 	hyp_entry.set_can_focus( true );
-	ev_given_hyp_entry.set_can_focus( true );
-	neg_ev_given_hyp_entry.set_can_focus( true );
-	n_hyp_label.set_can_focus( false );
-	ev_given_n_hyp_label.set_can_focus ( false );
-	neg_ev_given_n_hyp_label.set_can_focus( false );
-	n_hyp_entry.set_can_focus( true );
-	ev_given_n_hyp_entry.set_can_focus( true );
-	neg_ev_given_n_hyp_entry.set_can_focus( true );
+	ev_hyp_entry.set_can_focus( true );
+	nev_hyp_entry.set_can_focus( true );
+	nhyp_label.set_can_focus( false );
+	ev_nhyp_label.set_can_focus ( false );
+	nev_nhyp_label.set_can_focus( false );
+	nhyp_entry.set_can_focus( true );
+	ev_nhyp_entry.set_can_focus( true );
+	nev_nhyp_entry.set_can_focus( true );
 
 	hyp_entry.set_text("0.05");
-	ev_given_hyp_entry.set_text("0.8");
-	neg_ev_given_hyp_entry.set_text("0.2");
-	n_hyp_entry.set_text("0.95");
-	ev_given_n_hyp_entry.set_text("0.4");
-	neg_ev_given_n_hyp_entry.set_text("0.6");
+	ev_hyp_entry.set_text("0.8");
+	nev_hyp_entry.set_text("0.2");
+	nhyp_entry.set_text("0.95");
+	ev_nhyp_entry.set_text("0.4");
+	nev_nhyp_entry.set_text("0.6");
 	
 	phe_scale.set_value(0.05);
 	eh_scale.set_value(0.8);
@@ -106,18 +109,18 @@ MainWindow::MainWindow( void )
 	geometry_grid.attach( phe_scale, 1, 1 );
 
 	hypothesis_grid.attach( hyp_label, 0, 0 );
-	hypothesis_grid.attach( ev_given_hyp_label, 0, 1 );
-	hypothesis_grid.attach( neg_ev_given_hyp_label, 0, 2 );
+	hypothesis_grid.attach( ev_hyp_label, 0, 1 );
+	hypothesis_grid.attach( nev_hyp_label, 0, 2 );
 	hypothesis_grid.attach( hyp_entry, 1, 0 );
-	hypothesis_grid.attach( ev_given_hyp_entry, 1, 1 );
-	hypothesis_grid.attach( neg_ev_given_hyp_entry, 1, 2 );
+	hypothesis_grid.attach( ev_hyp_entry, 1, 1 );
+	hypothesis_grid.attach( nev_hyp_entry, 1, 2 );
 
-	n_hypothesis_grid.attach( n_hyp_label, 0, 0 );
-	n_hypothesis_grid.attach( ev_given_n_hyp_label, 0, 1 );
-	n_hypothesis_grid.attach( neg_ev_given_n_hyp_label, 0, 2 );
-	n_hypothesis_grid.attach( n_hyp_entry, 1, 0 );
-	n_hypothesis_grid.attach( ev_given_n_hyp_entry, 1, 1 );
-	n_hypothesis_grid.attach( neg_ev_given_n_hyp_entry, 1, 2 );
+	n_hypothesis_grid.attach( nhyp_label, 0, 0 );
+	n_hypothesis_grid.attach( ev_nhyp_label, 0, 1 );
+	n_hypothesis_grid.attach( nev_nhyp_label, 0, 2 );
+	n_hypothesis_grid.attach( nhyp_entry, 1, 0 );
+	n_hypothesis_grid.attach( ev_nhyp_entry, 1, 1 );
+	n_hypothesis_grid.attach( nev_nhyp_entry, 1, 2 );
 
 	result_button_box.pack_start( positive_evidence,
 								Gtk::PACK_EXPAND_WIDGET, 10 );
@@ -146,29 +149,29 @@ MainWindow::MainWindow( void )
 		sigc::mem_fun(this, &MainWindow::on_hyp_entry_activate));
 	hyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this, &MainWindow::on_hyp_entry_focus_out_event));
-	n_hyp_entry.signal_activate().connect(
+	nhyp_entry.signal_activate().connect(
 		sigc::mem_fun(this, &MainWindow::on_n_hyp_entry_activate));
-	n_hyp_entry.signal_focus_out_event().connect(
+	nhyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this, &MainWindow::on_n_hyp_entry_focus_out_event));
-	ev_given_hyp_entry.signal_activate().connect(
+	ev_hyp_entry.signal_activate().connect(
 		sigc::mem_fun(this, &MainWindow::on_ev_given_hyp_entry_activate));
-	ev_given_hyp_entry.signal_focus_out_event().connect(
+	ev_hyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this,
 		&MainWindow::on_ev_given_hyp_entry_focus_out_event));
-	neg_ev_given_hyp_entry.signal_activate().connect(
+	nev_hyp_entry.signal_activate().connect(
 		sigc::mem_fun(this, &MainWindow::on_neg_ev_given_hyp_entry_activate));
-	neg_ev_given_hyp_entry.signal_focus_out_event().connect(
+	nev_hyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this,
 		&MainWindow::on_neg_ev_given_hyp_entry_focus_out_event));
-	ev_given_n_hyp_entry.signal_activate().connect(
+	ev_nhyp_entry.signal_activate().connect(
 		sigc::mem_fun(this, &MainWindow::on_ev_given_n_hyp_entry_activate));
-	ev_given_n_hyp_entry.signal_focus_out_event().connect(
+	ev_nhyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this,
 		&MainWindow::on_ev_given_n_hyp_entry_focus_out_event));
-	neg_ev_given_n_hyp_entry.signal_activate().connect(
+	nev_nhyp_entry.signal_activate().connect(
 		sigc::mem_fun(this,
 		&MainWindow::on_neg_ev_given_n_hyp_entry_activate));
-	neg_ev_given_n_hyp_entry.signal_focus_out_event().connect(
+	nev_nhyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this,
 		&MainWindow::on_neg_ev_given_n_hyp_entry_focus_out_event));
 	}
@@ -176,15 +179,15 @@ MainWindow::MainWindow( void )
 MainWindow::~MainWindow() {
 }
 
-float MainWindow::text_to_float( std::string string_to_process ) {
-	float working_number = atof( string_to_process.c_str() );
+double MainWindow::text_to_double( std::string string_to_process ) {
+	double working_number = atof( string_to_process.c_str() );
 	if(working_number <= 0 || working_number >= 1 ) working_number = 0.05;
 	return working_number;
 }
 
-std::string MainWindow::float_to_text( float float_to_process ) {
+std::string MainWindow::double_to_text( double double_to_process ) {
 	std::stringstream output_string;
-	output_string << float_to_process;
+	output_string << double_to_process;
 	return output_string.str();
 }
 
@@ -194,116 +197,112 @@ bool MainWindow::on_delete_event( GdkEventAny *event ) {
 }
 
 void MainWindow::on_phe_scale_changed( void ) {
-	float working_number = phe_scale.get_value();
-	hyp_entry.set_text( float_to_text(working_number) );
-	n_hyp_entry.set_text( float_to_text( (1.0 - working_number) ));
+	double working_number = phe_scale.get_value();
+	hyp_entry.set_text( double_to_text(working_number) );
+	nhyp_entry.set_text( double_to_text( (1.0 - working_number) ));
 }
 
 void MainWindow::on_eh_scale_changed( void ) {
-	float working_number = eh_scale.get_value();
-	ev_given_hyp_entry.set_text( float_to_text(working_number) );
-	neg_ev_given_hyp_entry.set_text( float_to_text((1.0 - working_number)));
+	double working_number = eh_scale.get_value();
+	ev_hyp_entry.set_text( double_to_text(working_number) );
+	nev_hyp_entry.set_text( double_to_text((1.0 - working_number)));
 }
 
 void MainWindow::on_neh_scale_changed( void ) {
-	float working_number = neh_scale.get_value();
-	ev_given_n_hyp_entry.set_text( float_to_text(working_number));
-	neg_ev_given_n_hyp_entry.set_text( float_to_text((1.0 - working_number)));
+	double working_number = neh_scale.get_value();
+	ev_nhyp_entry.set_text( double_to_text(working_number));
+	nev_nhyp_entry.set_text( double_to_text((1.0 - working_number)));
 }
 
 void MainWindow::on_hyp_entry_activate( void ) {
-	float working_number = text_to_float( hyp_entry.get_text() );
-	hyp_entry.set_text( float_to_text( working_number ) );
-	n_hyp_entry.set_text( float_to_text( (1.0 - working_number) ) );
-	phe_scale.set_value( working_number );
+	hyp_entry.set_text(bayes_data.set_hyp(hyp_entry.get_text()));
+	nhyp_entry.set_text(bayes_data.get_nhyp());
+	phe_scale.set_value(bayes_data.get_hyp_value());
 }
 
 bool MainWindow::on_hyp_entry_focus_out_event( GdkEventFocus *ev ) {
 	if(window_is_closing) return false;
-	float working_number = text_to_float( hyp_entry.get_text() );
-	hyp_entry.set_text( float_to_text( working_number ) );
-	n_hyp_entry.set_text( float_to_text( (1.0 - working_number) ) );
-	phe_scale.set_value( working_number );
+	hyp_entry.set_text(bayes_data.set_hyp(hyp_entry.get_text()));
+	nhyp_entry.set_text(bayes_data.get_nhyp());
+	phe_scale.set_value(bayes_data.get_hyp_value());
 	return false;
 }
 
 void MainWindow::on_ev_given_hyp_entry_activate( void ) {
-	float working_number = text_to_float( ev_given_hyp_entry.get_text() );
-	ev_given_hyp_entry.set_text( float_to_text( working_number ) );
-	neg_ev_given_hyp_entry.set_text( float_to_text( (1.0 - working_number) ) );
-	eh_scale.set_value( working_number );
+	ev_hyp_entry.set_text(
+		bayes_data.set_ev_hyp(ev_hyp_entry.get_text()));
+	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
+	eh_scale.set_value(bayes_data.get_ev_hyp_value());
 }
 
 bool MainWindow::on_ev_given_hyp_entry_focus_out_event( GdkEventFocus *ev ) {
 	if(window_is_closing) return false;
-	float working_number = text_to_float( ev_given_hyp_entry.get_text() );
-	ev_given_hyp_entry.set_text( float_to_text( working_number ) );
-	neg_ev_given_hyp_entry.set_text( float_to_text( (1.0 - working_number) ) );
-	eh_scale.set_value( working_number );
+	ev_hyp_entry.set_text(
+		bayes_data.set_ev_hyp(ev_hyp_entry.get_text()));
+	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
+	eh_scale.set_value(bayes_data.get_ev_hyp_value());
 	return false;
 }
 
 void MainWindow::on_neg_ev_given_hyp_entry_activate( void ) {
-	float working_number = text_to_float( neg_ev_given_hyp_entry.get_text() );
-	neg_ev_given_hyp_entry.set_text( float_to_text( working_number ) );
-	ev_given_hyp_entry.set_text( float_to_text( (1 - working_number) ) );
-	eh_scale.set_value( (1 - working_number) );
+	nev_hyp_entry.set_text(
+		bayes_data.set_nev_hyp(nev_hyp_entry.get_text()));
+	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
+	eh_scale.set_value(bayes_data.get_ev_hyp_value());
 }
 
 bool MainWindow::on_neg_ev_given_hyp_entry_focus_out_event(GdkEventFocus *ev) {
 	if(window_is_closing) return false;
-	float working_number = text_to_float( neg_ev_given_hyp_entry.get_text() );
-	neg_ev_given_hyp_entry.set_text( float_to_text( working_number ) );
-	ev_given_hyp_entry.set_text( float_to_text( (1 - working_number) ) );
-	eh_scale.set_value( (1 - working_number) );
+	nev_hyp_entry.set_text(
+		bayes_data.set_nev_hyp(nev_hyp_entry.get_text()));
+	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
+	eh_scale.set_value(bayes_data.get_ev_hyp_value());
 	return false;
 }
 
 void MainWindow::on_n_hyp_entry_activate( void ) {
-	float working_number = text_to_float( n_hyp_entry.get_text() );
-	n_hyp_entry.set_text( float_to_text( working_number ) );
-	hyp_entry.set_text( float_to_text( (1.0 - working_number) ) );
-	phe_scale.set_value( (1.0 - working_number) );
+	nhyp_entry.set_text(bayes_data.set_nhyp(nhyp_entry.get_text()));
+	hyp_entry.set_text(bayes_data.get_hyp());
+	phe_scale.set_value(bayes_data.get_hyp_value());
 }
 
 bool MainWindow::on_n_hyp_entry_focus_out_event( GdkEventFocus *ev ) {
 	if(window_is_closing) return false;
-	float working_number = text_to_float( n_hyp_entry.get_text() );
-	n_hyp_entry.set_text( float_to_text( working_number ) );
-	hyp_entry.set_text( float_to_text( (1.0 - working_number) ) );
-	phe_scale.set_value( (1.0 - working_number) );
+	nhyp_entry.set_text(bayes_data.set_nhyp(nhyp_entry.get_text()));
+	hyp_entry.set_text(bayes_data.get_hyp());
+	phe_scale.set_value(bayes_data.get_hyp_value());
 	return false;
 }
 
 void MainWindow::on_ev_given_n_hyp_entry_activate( void ) {
-	float working_number = text_to_float( ev_given_n_hyp_entry.get_text() );
-	ev_given_n_hyp_entry.set_text( float_to_text( working_number ) );
-	neg_ev_given_n_hyp_entry.set_text( float_to_text((1.0 - working_number)));
-	neh_scale.set_value( (working_number) );
+	ev_nhyp_entry.set_text(
+		bayes_data.set_ev_nhyp(ev_nhyp_entry.get_text()));
+	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
+	neh_scale.set_value(bayes_data.get_ev_nhyp_value());
 }
 
 bool MainWindow::on_ev_given_n_hyp_entry_focus_out_event(GdkEventFocus *ev) {
 	if(window_is_closing) return false;
-	float working_number = text_to_float( ev_given_n_hyp_entry.get_text() );
-	ev_given_n_hyp_entry.set_text( float_to_text( working_number ) );
-	neg_ev_given_n_hyp_entry.set_text( float_to_text((1.0 - working_number)));
-	neh_scale.set_value( (working_number) );
+	ev_nhyp_entry.set_text(
+		bayes_data.set_ev_nhyp(ev_nhyp_entry.get_text()));
+	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
+	neh_scale.set_value(bayes_data.get_ev_nhyp_value());
 	return false;
 }
 
 void MainWindow::on_neg_ev_given_n_hyp_entry_activate( void ) {
-	float working_number = text_to_float( neg_ev_given_n_hyp_entry.get_text());
-	neg_ev_given_n_hyp_entry.set_text(float_to_text((working_number)));
-	ev_given_n_hyp_entry.set_text( float_to_text( (1.0 - working_number)));
-	neh_scale.set_value( (1.0 - working_number) );
+	nev_nhyp_entry.set_text(
+		bayes_data.set_nev_nhyp(nev_nhyp_entry.get_text()));
+	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
+	neh_scale.set_value(bayes_data.get_ev_nhyp_value());
 }
 
 bool MainWindow::
 on_neg_ev_given_n_hyp_entry_focus_out_event(GdkEventFocus *ev) {
 	if(window_is_closing) return false;
-	float working_number = text_to_float( neg_ev_given_n_hyp_entry.get_text());
-	neg_ev_given_n_hyp_entry.set_text(float_to_text((working_number)));
-	ev_given_n_hyp_entry.set_text( float_to_text( (1.0 - working_number)));
-	neh_scale.set_value( (1.0 - working_number) );
+	nev_nhyp_entry.set_text(
+		bayes_data.set_nev_nhyp(nev_nhyp_entry.get_text()));
+	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
+	neh_scale.set_value(bayes_data.get_ev_nhyp_value());
 	return false;
 }
