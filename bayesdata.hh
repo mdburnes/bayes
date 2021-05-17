@@ -32,6 +32,7 @@ class BayesData {
 	double get_hyp_value( void ) { return hyp; }
 	std::string set_nhyp( std::string str );
 	std::string get_nhyp( void );
+	double get_nhyp_value( void ) { return nhyp; }
 	std::string set_ev_hyp( std::string str );
 	std::string get_ev_hyp( void );
 	double get_ev_hyp_value( void ) { return ev_hyp; }
@@ -40,8 +41,10 @@ class BayesData {
 	double get_ev_nhyp_value( void ) { return ev_nhyp; }
 	std::string set_nev_hyp( std::string str );
 	std::string get_nev_hyp( void );
+	double get_nev_hyp_value( void ) { return nev_hyp; }
 	std::string set_nev_nhyp( std::string str );
 	std::string get_nev_nhyp( void );
+	double get_nev_nhyp_value( void ) { return nev_nhyp; }
 };
 
 #endif

@@ -22,6 +22,7 @@
 class MainWindow : public Gtk::Window {
   private:
 	bool window_is_closing;
+	void force_redraw( void );
   protected:
 	Gtk::Box window_box, inputs_box, controls_box;
 	Gtk::ButtonBox result_button_box;

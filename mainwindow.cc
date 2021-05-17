@@ -54,7 +54,7 @@ MainWindow::MainWindow( void )
 	result_button_box.set_valign( Gtk::ALIGN_END );
 
 	eh_scale.set_digits( 3 );
-	eh_scale.set_draw_value( true );
+	eh_scale.set_draw_value( false );
 	eh_scale.set_can_focus( true );
 	eh_scale.set_adjustment( eh_scale_adjustment );
 	eh_scale.set_inverted( true );
@@ -62,7 +62,7 @@ MainWindow::MainWindow( void )
 	eh_scale.set_vexpand( false );
 	eh_scale.set_hexpand( false );
 	neh_scale.set_digits( 3 );
-	neh_scale.set_draw_value( true );
+	neh_scale.set_draw_value( false );
 	neh_scale.set_can_focus( true );
 	neh_scale.set_adjustment( neh_scale_adjustment );
 	neh_scale.set_inverted( true );
@@ -70,7 +70,7 @@ MainWindow::MainWindow( void )
 	neh_scale.set_vexpand( false );
 	neh_scale.set_hexpand( false );
 	phe_scale.set_digits( 3 );
-	phe_scale.set_draw_value( true );
+	phe_scale.set_draw_value( false );
 	phe_scale.set_can_focus( true );
 	phe_scale.set_adjustment( phe_scale_adjustment );
 	phe_scale.set_size_request( 300, -1 );
@@ -182,6 +182,16 @@ MainWindow::MainWindow( void )
 MainWindow::~MainWindow() {
 }
 
+void MainWindow::force_redraw( void ) {
+	auto win = get_window();
+	if (win)
+		{
+			Gdk::Rectangle r(0, 0, get_allocation().get_width(),
+							 get_allocation().get_height());
+			win->invalidate_rect(r, false);
+		}
+}
+
 bool MainWindow::on_delete_event( GdkEventAny *event ) {
 	window_is_closing = true;
 	return false;
@@ -191,18 +201,21 @@ void MainWindow::on_phe_scale_changed( void ) {
 	bayes_data.set_hyp(phe_scale.get_value());
 	hyp_entry.set_text(bayes_data.get_hyp());
 	nhyp_entry.set_text(bayes_data.get_nhyp());
+	force_redraw();
 }
 
 void MainWindow::on_eh_scale_changed( void ) {
 	bayes_data.set_ev_hyp(eh_scale.get_value());
 	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
 	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
+	force_redraw();
 }
 
 void MainWindow::on_neh_scale_changed( void ) {
 	bayes_data.set_ev_nhyp(neh_scale.get_value());
 	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
 	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
+	force_redraw();
 }
 
 void MainWindow::on_hyp_entry_activate( void ) {
