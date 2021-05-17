@@ -29,15 +29,18 @@ bool BayesGraph::on_draw( const Cairo::RefPtr<Cairo::Context> &cr ) {
 	ev_nhyp_height = graph_height * bayes_data.get_ev_nhyp_value();
 
 	// draw the graph background
-	red = green = blue = 0.1;
+	red = BG_R;
+	green = BG_G;
+	blue = BG_B;
 	draw_rectangle(cr, left, top, right, bottom, red, green, blue);
 	// draw the ￢e|h rectangle
 	rec_top = top;
 	rec_left = left;
 	rec_right = hyp_width + left;
 	rec_bottom = top + nev_hyp_height;
-	red = 0.5;
-	green = blue = 0.0;
+	red = NE_H_R;
+	green = NE_H_G;
+	blue = NE_H_B;
 	draw_rectangle(cr,
 		rec_left, rec_top, rec_right, rec_bottom,
 		red, green, blue );
@@ -46,8 +49,9 @@ bool BayesGraph::on_draw( const Cairo::RefPtr<Cairo::Context> &cr ) {
 	rec_left = left;
 	rec_right = hyp_width + left;
 	rec_bottom = rec_top + ev_hyp_height;
-	blue = 0.5;
-	red = green = 0.0;
+	red = E_H_R;
+	green = E_H_G;
+	blue = E_H_B;
 	draw_rectangle(cr,
 		rec_left, rec_top, rec_right, rec_bottom,
 		red, green, blue );
@@ -56,8 +60,9 @@ bool BayesGraph::on_draw( const Cairo::RefPtr<Cairo::Context> &cr ) {
 	rec_left = left + hyp_width + DIVIDER;
 	rec_bottom = top + nev_nhyp_height;
 	rec_right = rec_left + nhyp_width;
-	red = 0.5;
-	green = blue = 0.0;
+	red = NE_NH_R;
+	green = NE_NH_G;
+	blue = NE_NH_B;
 	draw_rectangle(cr,
 		rec_left, rec_top, rec_right, rec_bottom,
 		red, green, blue );
@@ -66,14 +71,18 @@ bool BayesGraph::on_draw( const Cairo::RefPtr<Cairo::Context> &cr ) {
 	rec_left = left + hyp_width + DIVIDER;
 	rec_bottom = rec_top + ev_nhyp_height;
 	rec_right = rec_left + nhyp_width;
-	blue = 0.5;
-	red = green = 0.0;
+	red = E_NH_R;
+	green = E_NH_G;
+	blue = E_NH_B;
 	draw_rectangle(cr,
 		rec_left, rec_top, rec_right, rec_bottom,
 		red, green, blue );
 	// draw h/￢h divider
+	red = LINE_R;
+	green = LINE_G;
+	blue = LINE_B;
 	cr->set_line_width(3.0);
-	cr->set_source_rgb(1.0, 1.0, 1.0);
+	cr->set_source_rgb(red, green, blue);
 	h1 = top;
 	w1 = w2 = left + hyp_width + 2;
 	h2 = bottom;
