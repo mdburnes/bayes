@@ -21,6 +21,9 @@ MainWindow::MainWindow( void )
   geometry_grid(),
   hypothesis_grid(),
   n_hypothesis_grid(),
+  calculations_grid(),
+  hyp_ev_label( "P(H|E)", Gtk::ALIGN_END ),
+  nhyp_ev_label( "P(￢H|E)", Gtk::ALIGN_END ),
   hyp_label( "P(H)", Gtk::ALIGN_END ),
   nhyp_label( "P(￢H)", Gtk::ALIGN_END ),
   ev_hyp_label( "P(E|H)", Gtk::ALIGN_END ),
@@ -50,6 +53,11 @@ MainWindow::MainWindow( void )
 	n_hypothesis_grid.set_valign( Gtk::ALIGN_CENTER );
 	n_hypothesis_grid.set_row_spacing( 10 );
 	n_hypothesis_grid.set_column_spacing( 10 );
+	calculations_grid.set_can_focus( false );
+	calculations_grid.set_valign(Gtk::ALIGN_CENTER);
+	calculations_grid.set_halign(Gtk::ALIGN_CENTER);
+	calculations_grid.set_row_spacing(10);
+	calculations_grid.set_column_spacing(10);
 	result_button_box.set_halign( Gtk::ALIGN_END );
 	result_button_box.set_valign( Gtk::ALIGN_END );
 
@@ -81,6 +89,11 @@ MainWindow::MainWindow( void )
 	bayes_graph.set_hexpand( true );
 	bayes_graph.set_vexpand( true );
 
+	hyp_ev_label.set_can_focus( false );
+	nhyp_ev_label.set_can_focus( false );
+	hyp_ev_entry.set_can_focus( false );
+	nhyp_ev_entry.set_can_focus( false );
+
 	hyp_label.set_can_focus( false );
 	ev_hyp_label.set_can_focus( false );
 	nev_hyp_label.set_can_focus( false );
@@ -93,6 +106,9 @@ MainWindow::MainWindow( void )
 	nhyp_entry.set_can_focus( true );
 	ev_nhyp_entry.set_can_focus( true );
 	nev_nhyp_entry.set_can_focus( true );
+
+	hyp_ev_entry.set_text("xxx");
+	nhyp_ev_entry.set_text("xxx");
 
 	hyp_entry.set_text("0.05");
 	ev_hyp_entry.set_text("0.8");
@@ -125,6 +141,11 @@ MainWindow::MainWindow( void )
 	n_hypothesis_grid.attach( ev_nhyp_entry, 1, 1 );
 	n_hypothesis_grid.attach( nev_nhyp_entry, 1, 2 );
 
+	calculations_grid.attach(hyp_ev_label, 0, 0);
+	calculations_grid.attach(nhyp_ev_label, 0, 1);
+	calculations_grid.attach(hyp_ev_entry, 1, 0);
+	calculations_grid.attach(nhyp_ev_entry, 1, 1);
+
 	result_button_box.pack_start( positive_evidence,
 								Gtk::PACK_EXPAND_WIDGET, 10 );
 	result_button_box.pack_start( negative_evidence,
@@ -133,7 +154,8 @@ MainWindow::MainWindow( void )
 	window_box.pack_start( geometry_grid, Gtk::PACK_EXPAND_WIDGET, 10 );
 	inputs_box.pack_start( hypothesis_grid, Gtk::PACK_EXPAND_WIDGET, 10 );
 	inputs_box.pack_start( n_hypothesis_grid, Gtk::PACK_EXPAND_WIDGET, 10 );
-	controls_box.pack_start( inputs_box, Gtk:: PACK_EXPAND_WIDGET, 10 );
+	controls_box.pack_start( inputs_box, Gtk::PACK_EXPAND_WIDGET, 10 );
+	controls_box.pack_start( calculations_grid, Gtk::PACK_EXPAND_WIDGET, 10);
 	controls_box.pack_start( result_button_box,
 							Gtk::PACK_EXPAND_WIDGET, 10 );
 	window_box.pack_start( controls_box, Gtk::PACK_EXPAND_WIDGET, 10 );
