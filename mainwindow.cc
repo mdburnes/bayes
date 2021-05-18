@@ -221,22 +221,34 @@ bool MainWindow::on_delete_event( GdkEventAny *event ) {
 
 void MainWindow::on_phe_scale_changed( void ) {
 	bayes_data.set_hyp(phe_scale.get_value());
+	bayes_data.set_hyp_ev();
+	bayes_data.set_nhyp_ev();
 	hyp_entry.set_text(bayes_data.get_hyp());
 	nhyp_entry.set_text(bayes_data.get_nhyp());
+	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
+	nhyp_ev_entry.set_text(bayes_data.get_nhyp_ev());
 	force_redraw();
 }
 
 void MainWindow::on_eh_scale_changed( void ) {
 	bayes_data.set_ev_hyp(eh_scale.get_value());
+	bayes_data.set_hyp_ev();
+	bayes_data.set_nhyp_ev();
 	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
 	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
+	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
+	nhyp_ev_entry.set_text(bayes_data.get_nhyp_ev());
 	force_redraw();
 }
 
 void MainWindow::on_neh_scale_changed( void ) {
 	bayes_data.set_ev_nhyp(neh_scale.get_value());
+	bayes_data.set_hyp_ev();
+	bayes_data.set_nhyp_ev();
 	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
 	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
+	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
+	nhyp_ev_entry.set_text(bayes_data.get_nhyp_ev());
 	force_redraw();
 }
 

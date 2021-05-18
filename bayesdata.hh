@@ -1,6 +1,7 @@
 #ifndef BAYES_BAYESDATA_HH
 #define BAYES_BAYESDATA_HH
 
+#include <string>
 #define HYPOTHESIS 0.05
 #define EVIDENCE_GIVEN_H 0.80
 #define EVIDENCE_GIVEN_NOT_H 0.40
@@ -12,6 +13,8 @@
 
 class BayesData {
   private:
+    // The calculations
+	double hyp_ev, nhyp_ev;
 	// hyp   = P(H) = 1 - P(￢H)
 	// nhyp = P(￢H) = 1 - P(H)
 	double hyp, nhyp;
@@ -45,6 +48,10 @@ class BayesData {
 	std::string set_nev_nhyp( std::string str );
 	std::string get_nev_nhyp( void );
 	double get_nev_nhyp_value( void ) { return nev_nhyp; }
+	void set_hyp_ev( void );
+	std::string get_hyp_ev( void );
+	void set_nhyp_ev( void );
+	std::string get_nhyp_ev( void );
 };
 
 #endif

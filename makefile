@@ -6,10 +6,10 @@ bayes : $(objects)
 main.o : main.cc mainwindow.hh bayesdata.hh
 	g++ main.cc -c -o main.o `pkg-config gtkmm-3.0 --cflags`
 
-mainwindow.o : mainwindow.cc mainwindow.hh bayesgraph.hh
+mainwindow.o : mainwindow.cc mainwindow.hh bayesgraph.hh bayesdata.hh
 	g++ mainwindow.cc -c -o mainwindow.o `pkg-config gtkmm-3.0 --cflags`
 
-bayesgraph.o : bayesgraph.cc bayesgraph.hh
+bayesgraph.o : bayesgraph.cc bayesgraph.hh bayesdata.hh
 	g++ bayesgraph.cc -c -o bayesgraph.o `pkg-config gtkmm-3.0 --cflags`
 
 bayesdata.o : bayesdata.cc bayesdata.hh

@@ -129,3 +129,23 @@ std::string BayesData::get_nev_nhyp( void ) {
 	s_str << nev_nhyp;
 	return s_str.str();
 }
+
+void BayesData::set_hyp_ev( void ) {
+	hyp_ev = ((ev_hyp*hyp)/(ev_hyp*hyp+ev_nhyp*nhyp));
+}
+
+std::string BayesData::get_hyp_ev( void ) {
+	std::stringstream s_str;
+	s_str << hyp_ev;
+	return s_str.str();
+}
+
+void BayesData::set_nhyp_ev( void ) {
+	nhyp_ev = ((ev_nhyp*nhyp)/(ev_nhyp*nhyp+ev_hyp*hyp));
+}
+
+std::string BayesData::get_nhyp_ev( void ) {
+	std::stringstream s_str;
+	s_str << nhyp_ev;
+	return s_str.str();
+}
