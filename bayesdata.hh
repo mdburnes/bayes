@@ -14,7 +14,7 @@
 class BayesData {
   private:
     // The calculations
-	double hyp_ev, nhyp_ev;
+	double hyp_ev, hyp_nev;
 	// hyp   = P(H) = 1 - P(￢H)
 	// nhyp = P(￢H) = 1 - P(H)
 	double hyp, nhyp;
@@ -50,8 +50,8 @@ class BayesData {
 	double get_nev_nhyp_value( void ) { return nev_nhyp; }
 	void set_hyp_ev( void );
 	std::string get_hyp_ev( void );
-	void set_nhyp_ev( void );
-	std::string get_nhyp_ev( void );
+	void set_hyp_nev( void );
+	std::string get_hyp_nev( void );
 };
 
 #endif

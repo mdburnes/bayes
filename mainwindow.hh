@@ -28,11 +28,11 @@ class MainWindow : public Gtk::Window {
 	Gtk::ButtonBox result_button_box;
 	Gtk::Grid geometry_grid, hypothesis_grid, n_hypothesis_grid;
 	Gtk::Grid calculations_grid;
-	Gtk::Label hyp_ev_label, nhyp_ev_label;
+	Gtk::Label hyp_ev_label, hyp_nev_label;
 	Gtk::Label hyp_label, nhyp_label;
 	Gtk::Label ev_hyp_label, ev_nhyp_label;
 	Gtk::Label nev_hyp_label, nev_nhyp_label;
-	Gtk::Entry hyp_ev_entry, nhyp_ev_entry;
+	Gtk::Entry hyp_ev_entry, hyp_nev_entry;
 	Gtk::Entry hyp_entry, nhyp_entry;
 	Gtk::Entry ev_hyp_entry, ev_nhyp_entry;
 	Gtk::Entry nev_hyp_entry, nev_nhyp_entry;

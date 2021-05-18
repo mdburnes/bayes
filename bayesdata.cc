@@ -10,6 +10,8 @@ BayesData::BayesData() {
 	nev_hyp = 1 - ev_hyp;
 	ev_nhyp = EVIDENCE_GIVEN_NOT_H;
 	nev_nhyp = 1 - ev_nhyp;
+	set_hyp_ev();
+	set_hyp_nev();
 }
 
 double BayesData::text_to_double( std::string str ) {
@@ -140,12 +142,12 @@ std::string BayesData::get_hyp_ev( void ) {
 	return s_str.str();
 }
 
-void BayesData::set_nhyp_ev( void ) {
-	nhyp_ev = ((ev_nhyp*nhyp)/(ev_nhyp*nhyp+ev_hyp*hyp));
+void BayesData::set_hyp_nev( void ) {
+	hyp_nev = ((nev_hyp*hyp)/(nev_hyp*hyp+nev_nhyp*nhyp));
 }
 
-std::string BayesData::get_nhyp_ev( void ) {
+std::string BayesData::get_hyp_nev( void ) {
 	std::stringstream s_str;
-	s_str << nhyp_ev;
+	s_str << hyp_nev;
 	return s_str.str();
 }

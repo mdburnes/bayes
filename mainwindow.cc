@@ -23,7 +23,7 @@ MainWindow::MainWindow( void )
   n_hypothesis_grid(),
   calculations_grid(),
   hyp_ev_label( "P(H|E)", Gtk::ALIGN_END ),
-  nhyp_ev_label( "P(￢H|E)", Gtk::ALIGN_END ),
+  hyp_nev_label( "P(H|￢E)", Gtk::ALIGN_END ),
   hyp_label( "P(H)", Gtk::ALIGN_END ),
   nhyp_label( "P(￢H)", Gtk::ALIGN_END ),
   ev_hyp_label( "P(E|H)", Gtk::ALIGN_END ),
@@ -90,9 +90,9 @@ MainWindow::MainWindow( void )
 	bayes_graph.set_vexpand( true );
 
 	hyp_ev_label.set_can_focus( false );
-	nhyp_ev_label.set_can_focus( false );
+	hyp_nev_label.set_can_focus( false );
 	hyp_ev_entry.set_can_focus( false );
-	nhyp_ev_entry.set_can_focus( false );
+	hyp_nev_entry.set_can_focus( false );
 
 	hyp_label.set_can_focus( false );
 	ev_hyp_label.set_can_focus( false );
@@ -107,19 +107,19 @@ MainWindow::MainWindow( void )
 	ev_nhyp_entry.set_can_focus( true );
 	nev_nhyp_entry.set_can_focus( true );
 
-	hyp_ev_entry.set_text("xxx");
-	nhyp_ev_entry.set_text("xxx");
+	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
+	hyp_nev_entry.set_text(bayes_data.get_hyp_nev());
 
-	hyp_entry.set_text("0.05");
-	ev_hyp_entry.set_text("0.8");
-	nev_hyp_entry.set_text("0.2");
-	nhyp_entry.set_text("0.95");
-	ev_nhyp_entry.set_text("0.4");
-	nev_nhyp_entry.set_text("0.6");
+	hyp_entry.set_text(bayes_data.get_hyp());
+	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
+	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
+	nhyp_entry.set_text(bayes_data.get_nhyp());
+	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
+	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
 	
-	phe_scale.set_value(0.05);
-	eh_scale.set_value(0.8);
-	neh_scale.set_value(0.4);
+	phe_scale.set_value(bayes_data.get_hyp_value());
+	eh_scale.set_value(bayes_data.get_ev_hyp_value());
+	neh_scale.set_value(bayes_data.get_ev_nhyp_value());
 
 
 	geometry_grid.attach( eh_scale, 0, 0 );
@@ -142,9 +142,9 @@ MainWindow::MainWindow( void )
 	n_hypothesis_grid.attach( nev_nhyp_entry, 1, 2 );
 
 	calculations_grid.attach(hyp_ev_label, 0, 0);
-	calculations_grid.attach(nhyp_ev_label, 0, 1);
+	calculations_grid.attach(hyp_nev_label, 0, 1);
 	calculations_grid.attach(hyp_ev_entry, 1, 0);
-	calculations_grid.attach(nhyp_ev_entry, 1, 1);
+	calculations_grid.attach(hyp_nev_entry, 1, 1);
 
 	result_button_box.pack_start( positive_evidence,
 								Gtk::PACK_EXPAND_WIDGET, 10 );
@@ -222,33 +222,33 @@ bool MainWindow::on_delete_event( GdkEventAny *event ) {
 void MainWindow::on_phe_scale_changed( void ) {
 	bayes_data.set_hyp(phe_scale.get_value());
 	bayes_data.set_hyp_ev();
-	bayes_data.set_nhyp_ev();
+	bayes_data.set_hyp_nev();
 	hyp_entry.set_text(bayes_data.get_hyp());
 	nhyp_entry.set_text(bayes_data.get_nhyp());
 	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
-	nhyp_ev_entry.set_text(bayes_data.get_nhyp_ev());
+	hyp_nev_entry.set_text(bayes_data.get_hyp_nev());
 	force_redraw();
 }
 
 void MainWindow::on_eh_scale_changed( void ) {
 	bayes_data.set_ev_hyp(eh_scale.get_value());
 	bayes_data.set_hyp_ev();
-	bayes_data.set_nhyp_ev();
+	bayes_data.set_hyp_nev();
 	ev_hyp_entry.set_text(bayes_data.get_ev_hyp());
 	nev_hyp_entry.set_text(bayes_data.get_nev_hyp());
 	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
-	nhyp_ev_entry.set_text(bayes_data.get_nhyp_ev());
+	hyp_nev_entry.set_text(bayes_data.get_hyp_nev());
 	force_redraw();
 }
 
 void MainWindow::on_neh_scale_changed( void ) {
 	bayes_data.set_ev_nhyp(neh_scale.get_value());
 	bayes_data.set_hyp_ev();
-	bayes_data.set_nhyp_ev();
+	bayes_data.set_hyp_nev();
 	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
 	nev_nhyp_entry.set_text(bayes_data.get_nev_nhyp());
 	hyp_ev_entry.set_text(bayes_data.get_hyp_ev());
-	nhyp_ev_entry.set_text(bayes_data.get_nhyp_ev());
+	hyp_nev_entry.set_text(bayes_data.get_hyp_nev());
 	force_redraw();
 }
 
