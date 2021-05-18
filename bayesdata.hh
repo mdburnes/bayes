@@ -50,8 +50,10 @@ class BayesData {
 	double get_nev_nhyp_value( void ) { return nev_nhyp; }
 	void set_hyp_ev( void );
 	std::string get_hyp_ev( void );
+	double get_hyp_ev_value( void ) { return hyp_ev; }
 	void set_hyp_nev( void );
 	std::string get_hyp_nev( void );
+	double get_hyp_nev_value( void ) { return hyp_nev; }
 };
 
 #endif

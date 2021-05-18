@@ -58,6 +58,8 @@ class MainWindow : public Gtk::Window {
 	bool on_ev_given_n_hyp_entry_focus_out_event( GdkEventFocus *ev );
 	void on_neg_ev_given_n_hyp_entry_activate( void );
 	bool on_neg_ev_given_n_hyp_entry_focus_out_event( GdkEventFocus *ev );
+	void on_positive_evidence_clicked( void );
+	void on_negative_evidence_clicked( void );
   public:
 	MainWindow( void );
 	~MainWindow();

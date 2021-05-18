@@ -199,6 +199,12 @@ MainWindow::MainWindow( void )
 	nev_nhyp_entry.signal_focus_out_event().connect(
 		sigc::mem_fun(this,
 		&MainWindow::on_neg_ev_given_n_hyp_entry_focus_out_event));
+	positive_evidence.signal_clicked().connect(
+		sigc::mem_fun(this,
+		&MainWindow::on_positive_evidence_clicked));
+	negative_evidence.signal_clicked().connect(
+		sigc::mem_fun(this,
+		&MainWindow::on_negative_evidence_clicked));
 	}
 
 MainWindow::~MainWindow() {
@@ -343,4 +349,14 @@ on_neg_ev_given_n_hyp_entry_focus_out_event(GdkEventFocus *ev) {
 	ev_nhyp_entry.set_text(bayes_data.get_ev_nhyp());
 	neh_scale.set_value(bayes_data.get_ev_nhyp_value());
 	return false;
+}
+
+void MainWindow::on_positive_evidence_clicked( void ) {
+	phe_scale.set_value(bayes_data.get_hyp_ev_value());
+	on_phe_scale_changed();
+}
+
+void MainWindow::on_negative_evidence_clicked( void ) {
+	phe_scale.set_value(bayes_data.get_hyp_nev_value());
+	on_phe_scale_changed();
 }
